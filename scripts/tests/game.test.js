@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, showScore } = require("../game");
+const { game, newGame, showScore, addTurn } = require("../game");
 
 const { hasUncaughtExceptionCaptureCallback } = require("process");
 
@@ -46,8 +46,8 @@ describe("newGame works correctly", () => {
     test("should clear the player moves array", () => {
         expect(game.playerMoves.length).toBe(0);
     });
-    test("should clear the computer sequence rray", () => {
-        expect(game.currentGame.length).toBe(0);
+    test("should be one move in the computer's game array", () => {   // new test to implement the addTurn function
+        expect(game.currentGame.length).toBe(1);       
     });
     test("should display 0 for the element with id of score", () => {
         expect(document.getElementById("score").innerText).toEqual(0);
