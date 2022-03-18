@@ -11,6 +11,18 @@ function newGame() {
     game.playerMoves = [];
     game.currentGame = [];
     turnNumber = 0;
+    for (let circle of document.getElementsByClassName("circle")) {
+        if (circle.getAttribute("data-listener") !== "true") {
+            circle.addEventListener("click", (e) => {   // we are using the click object as e so we can get the id of the clicked circle
+                let move = e.target.getAttribute("id");   // store the above id into move
+                lightsOn(move);
+                game.playerMoves.push(move);
+                playerTurn();
+            });
+            circle.setAttribute("data-listener", "true");
+        }
+    }
+
     showScore();
     addTurn();
 }
