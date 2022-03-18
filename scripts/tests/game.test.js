@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, showScore, addTurn, lightsOn } = require("../game");
+const { game, newGame, showScore, addTurn, lightsOn, showTurns } = require("../game");
 
 const { hasUncaughtExceptionCaptureCallback } = require("process");
 
@@ -30,6 +30,9 @@ describe("game object contains correct keys", () => {
     test("choices contain correct ids", () => {
         expect(game.choices).toEqual(["button1", "button2", "button3", "button4"]);  // game.choices we pick the choices key from the game object
     });
+    test("turnNumber key exists", () => {
+        expect("turnNumber" in game).toBe(true);   // test first if turnNumber key exists then create key in game.js in game object
+    });
 });
 
 describe("newGame works correctly", () => {
@@ -37,6 +40,7 @@ describe("newGame works correctly", () => {
         game.score = 42;
         game.playerMoves = ["button1", "button2"];
         game.currentGame = ["button1", "button2"];
+        game.turnNumber = 42;
         document.getElementById("score").innerText = "42";   // will set the score on the DOM to 42
         newGame();
     });
@@ -45,6 +49,9 @@ describe("newGame works correctly", () => {
     });
     test("should clear the player moves array", () => {
         expect(game.playerMoves.length).toBe(0);
+    });
+    test("should set the turnNumber to 0", () => {
+        expect(game.turnNumber).toEqual(0);
     });
     test("should be one move in the computer's game array", () => {   // new test to implement the addTurn function
         expect(game.currentGame.length).toBe(1);       
@@ -79,5 +86,10 @@ describe("gameplay works correctly", () => {
         let button = document.getElementById(game.currentGame[0]);   // get the first element from currentGame array (at least one in ir) and assign it to button.
         lightsOn(game.currentGame[0]);  // call lights on function with the same ID
         expect(button.classList).toContain("light");   // the test should fail since we have yet to implement the lightOn fuction
+    });
+    test("showTurns should update game.turnNumber", () => {   // extend the game object and give it a property of turnNumber that is updated as showTurns goes over the sequence
+        game.turnNumber = 42;
+        showTurns();   // this should reset the turnNumber to 0
+        expect(game.turnNumber).toBe(0);
     });
 });
