@@ -2,9 +2,14 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, showScore, addTurn, lightsOn, showTurns } = require("../game");
+const { game, newGame, showScore, addTurn, lightsOn, showTurns, playerTurn } = require("../game");
 
 const { hasUncaughtExceptionCaptureCallback } = require("process");
+
+// the first argument to spyOn is the window and the second is the method 'alert'
+// alert is a method of the window object
+jest.spyOn(window, "alert").mockImplementation(() => {});
+
 
 beforeAll(() => {
     let fs = require("fs");  // install the fs library
@@ -98,5 +103,16 @@ describe("gameplay works correctly", () => {
         game.turnNumber = 42;
         showTurns();   // this should reset the turnNumber to 0
         expect(game.turnNumber).toBe(0);
+    });
+    // test to check if the score inceremnts if the move is correct
+    test("should incement the score if the turn is correct", () => {
+        game.playerMoves.push(game.currentGame[0]);
+        playerTurn();
+        expect(game.score).toBe(1);
+    });
+    test("should call an alert if the move is wrong", () => {
+        game.playerMoves.push("wrong");
+        playerTurn();
+        expect(window.alert).toBeCalledWith("Wrong move!");
     });
 });
