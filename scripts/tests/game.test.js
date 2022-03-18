@@ -38,6 +38,15 @@ describe("game object contains correct keys", () => {
     test("turnNumber key exists", () => {
         expect("turnNumber" in game).toBe(true);   // test first if turnNumber key exists then create key in game.js in game object
     });
+    test("lastButton key exists", () => {
+        expect("lastButton" in game).toBe(true);   // test first if lastButton key exists then create key in game.js in game object
+    });
+    test("turnInProgress key exists", () => {
+        expect("turnInProgress" in game).toBe(true);   // test first if turnInProgress key exists then create key in game.js in game object
+    });
+    test("turnInProgress key value is false", () => {
+        expect("turnInProgress" in game).toBe(true);   // test first if turnInProgress key value is false
+    });
 });
 
 describe("newGame works correctly", () => {
@@ -57,6 +66,9 @@ describe("newGame works correctly", () => {
     });
     test("should set the turnNumber to 0", () => {
         expect(game.turnNumber).toEqual(0);
+    });
+    test("should set the lastButton to ''", () => {
+        expect(game.lastButton).toEqual("");
     });
     test("should be one move in the computer's game array", () => {   // new test to implement the addTurn function
         expect(game.currentGame.length).toBe(1);       
@@ -114,5 +126,15 @@ describe("gameplay works correctly", () => {
         game.playerMoves.push("wrong");
         playerTurn();
         expect(window.alert).toBeCalledWith("Wrong move!");
+    });
+    test("should toggle turnInProgress to true", () => {
+        showTurns();
+        expect(game.turnInProgress).toBe(true);
+    });
+    test("clicking during computer sequence should fail", () => {
+        showTurns();  // start the computer sequence by calling the showTurns function
+        game.lastButton = "";
+        document.getElementById("button2").click();
+        expect(game.lastButton).toEqual("");
     });
 });
