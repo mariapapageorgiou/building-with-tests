@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { game, newGame, showScore, addTurn } = require("../game");
+const { game, newGame, showScore, addTurn, lightsOn } = require("../game");
 
 const { hasUncaughtExceptionCaptureCallback } = require("process");
 
@@ -51,5 +51,33 @@ describe("newGame works correctly", () => {
     });
     test("should display 0 for the element with id of score", () => {
         expect(document.getElementById("score").innerText).toEqual(0);
+    });
+});
+
+// test to see if gameplay works correctly including lights on and adding turn
+describe("gameplay works correctly", () => {
+    // beforeAll runs before all tests, beforeEach runs before each test is run
+    beforeEach( () => {   
+        game.score = 0;   // we will reset the state each time
+        game.currentGame = [];
+        game.playerMoves = [];
+        addTurn();   //add a new turn to our currentGame array
+    });
+    // afterEach to reset after each test
+    afterEach( () => {   // reset the state after each test
+        game.score = 0;
+        game.currentGame = [];
+        game.playerMoves = [];
+    });
+    // with beforeEach we should have one element in currectGame array and we will be testing if there are 2 elements in the array
+    test("addTurn adds a new turn to the game", () => {
+        addTurn();
+        expect(game.currentGame.length).toBe(2);   // the elements should be 2 so we are checking the length of te array
+    });
+    // want to check if the correct class has been added to our button to light it up
+    test("should add correct class to light up the buttons", () => {
+        let button = document.getElementById(game.currentGame[0]);   // get the first element from currentGame array (at least one in ir) and assign it to button.
+        lightsOn(game.currentGame[0]);  // call lights on function with the same ID
+        expect(button.classList).toContain("light");   // the test should fail since we have yet to implement the lightOn fuction
     });
 });

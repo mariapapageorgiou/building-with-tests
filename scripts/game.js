@@ -26,5 +26,12 @@ function showScore() {
     document.getElementById("score").innerText = game.score;
 }
 
+// call the lightOn function with the id of one of our circles 'circ'
+function lightsOn(circ) {
+    document.getElementById(circ).classList.add("light");   // the class of 'light' will be addded to the appropriate circle
+    setTimeout(() => {
+        document.getElementById(circ).classList.remove("light");   // remove the class 'light' from the circle
+    }, 400);    // after 400 miliseconds
+}
 
-module.exports = { game, newGame, showScore, addTurn };
+module.exports = { game, newGame, showScore, addTurn, lightsOn };
